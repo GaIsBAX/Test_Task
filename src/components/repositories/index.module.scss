@@ -1,0 +1,13 @@
+.repositories {
+  width: 960px;
+  min-height: 900px;
+  padding: 0 30px;
+}
+
+.repoList {
+  display: flex;
+  li {
+    width: 180px;
+    height: 50px;
+  }
+}

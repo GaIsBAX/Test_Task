@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { selectFilter } from "../../redux/filter/selectors";
 import { setQuery } from "../../redux/filter/filterSlice";
 import { ChangeEvent } from "react";
+import styles from "./index.module.scss";
 
 const Header = () => {
   // const [query, setQuery] = useState("");
@@ -25,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header className={styles.header}>
       <input
         type="text"
         placeholder="Введите запрос..."

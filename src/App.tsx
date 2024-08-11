@@ -1,4 +1,4 @@
-import "./App.css";
+import Footer from "./components/footer";
 import Header from "./components/header";
 import Repositories from "./components/repositories";
 
@@ -7,6 +7,7 @@ function App() {
     <div>
       <Header />
       <Repositories />
+      <Footer />
     </div>
   );
 }

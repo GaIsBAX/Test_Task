@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../redux/store";
 import { handleSearch } from "../../redux/repositories/asyncActions";
 import { selectFilter } from "../../redux/filter/selectors";
 import { useState } from "react";
+import styles from "./index.module.scss";
 
 interface RepoStore {
   id: string;
@@ -59,25 +60,21 @@ const Repositories = () => {
     );
   };
 
-  if (items.length === 0) {
-    return <h1>Введите Название</h1>;
-  }
+
   return (
-    <div>
+    <div className={styles.repositories}>
       {items.length > 0 && (
         <div>
-          <ul>
-            <li>
-              <div>Название</div>
-              <div>Язык</div>
-              <button onClick={onForks}>Число форков</button>
-              <button onClick={onStars}>Число звёзд</button>
-              <button onClick={onUpdate}>Дата обновления</button>
-            </li>
+          <ul className={styles.repoList}>
+            <li>Название</li>
+            <li>Язык</li>
+            <li onClick={onForks}>Число форков</li>
+            <li onClick={onStars}>Число звёзд</li>
+            <li onClick={onUpdate}>Дата обновления</li>
           </ul>
           <div>
             {items.map((repo: RepoStore) => (
-              <ul key={repo.id}>
+              <ul className={styles.repoList} key={repo.id}>
                 <li>
                   <a
                     href={repo.html_url}
@@ -87,7 +84,7 @@ const Repositories = () => {
                     {repo.name}
                   </a>
                 </li>
-                <li>{repo.language}</li>
+                <li>{repo.language }</li>
                 <li>{repo.forks_count}</li>
                 <li>{repo.stargazers_count}</li>
                 <li>{new Date(repo.updated_at).toLocaleDateString()}</li>
