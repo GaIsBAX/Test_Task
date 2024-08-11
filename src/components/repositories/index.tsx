@@ -1,26 +1,84 @@
 import { useSelector } from "react-redux";
 import { selectItems } from "../../redux/repositories/selectors";
+import { useAppDispatch } from "../../redux/store";
+import { handleSearch } from "../../redux/repositories/asyncActions";
+import { selectFilter } from "../../redux/filter/selectors";
+import { useState } from "react";
+
+interface RepoStore {
+  id: string;
+  html_url: string;
+  name: string;
+  language: string;
+  forks_count: string;
+  stargazers_count: string;
+  updated_at: string;
+}
 
 const Repositories = () => {
+  const dispatch = useAppDispatch();
   const { items } = useSelector(selectItems);
+  const { query } = useSelector(selectFilter);
+  const [orderForks, setOrderForks] = useState<"desc" | "asc">("asc");
+  const [orderStars, setOrderStars] = useState<"desc" | "asc">("asc");
+  const [orderUpdated, setOrderUpdated] = useState<"desc" | "asc">("asc");
 
+  const onForks = () => {
+    const newOrder = orderForks === "asc" ? "desc" : "asc";
+    setOrderForks(newOrder);
+    dispatch(
+      handleSearch({
+        query,
+        sortBy: "forks",
+        order: newOrder,
+      })
+    );
+  };
+
+  const onStars = () => {
+    const newOrder = orderStars === "asc" ? "desc" : "asc";
+    setOrderStars(newOrder);
+    dispatch(
+      handleSearch({
+        query,
+        sortBy: "stars",
+        order: newOrder,
+      })
+    );
+  };
+
+  const onUpdate = () => {
+    const newOrder = orderUpdated === "asc" ? "desc" : "asc";
+    setOrderUpdated(newOrder);
+    dispatch(
+      handleSearch({
+        query,
+        sortBy: "update",
+        order: newOrder,
+      })
+    );
+  };
+
+  if (items.length === 0) {
+    return <h1>Введите Название</h1>;
+  }
   return (
     <div>
       {items.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Название</th>
-              <th>Язык</th>
-              <th>Число форков</th>
-              <th>Число звёзд</th>
-              <th>Дата обновления</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((repo: any) => (
-              <tr key={repo.id}>
-                <td>
+        <div>
+          <ul>
+            <li>
+              <div>Название</div>
+              <div>Язык</div>
+              <button onClick={onForks}>Число форков</button>
+              <button onClick={onStars}>Число звёзд</button>
+              <button onClick={onUpdate}>Дата обновления</button>
+            </li>
+          </ul>
+          <div>
+            {items.map((repo: RepoStore) => (
+              <ul key={repo.id}>
+                <li>
                   <a
                     href={repo.html_url}
                     target="_blank"
@@ -28,15 +86,15 @@ const Repositories = () => {
                   >
                     {repo.name}
                   </a>
-                </td>
-                <td>{repo.language}</td>
-                <td>{repo.forks_count}</td>
-                <td>{repo.stargazers_count}</td>
-                <td>{new Date(repo.updated_at).toLocaleDateString()}</td>
-              </tr>
+                </li>
+                <li>{repo.language}</li>
+                <li>{repo.forks_count}</li>
+                <li>{repo.stargazers_count}</li>
+                <li>{new Date(repo.updated_at).toLocaleDateString()}</li>
+              </ul>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       )}
     </div>
   );
