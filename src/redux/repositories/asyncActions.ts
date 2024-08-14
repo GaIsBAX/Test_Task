@@ -16,7 +16,7 @@ export const handleSearch = createAsyncThunk(
 
     const res = await axios.get(url, {
       headers: {
-        "User-Agent": "Test_Task", // Замените на ваше название приложения
+        "User-Agent": "Test_Task", 
       },
     });
     return res.data.items;

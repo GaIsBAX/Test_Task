@@ -5,6 +5,7 @@ import { handleSearch } from "../../redux/repositories/asyncActions";
 import { selectFilter } from "../../redux/filter/selectors";
 import { useState } from "react";
 import styles from "./index.module.scss";
+import AdditionalInfo from "../additionalInfo";
 
 interface RepoStore {
   id: string;
@@ -19,6 +20,7 @@ interface RepoStore {
 const Repositories = () => {
   const dispatch = useAppDispatch();
   const { items } = useSelector(selectItems);
+  const [itemId, setItemId] = useState<string>();
   const { query } = useSelector(selectFilter);
   const [orderForks, setOrderForks] = useState<"desc" | "asc">("asc");
   const [orderStars, setOrderStars] = useState<"desc" | "asc">("asc");
@@ -60,7 +62,6 @@ const Repositories = () => {
     );
   };
 
-
   return (
     <div className={styles.repositories}>
       {items.length > 0 && (
@@ -74,7 +75,11 @@ const Repositories = () => {
           </ul>
           <div>
             {items.map((repo: RepoStore) => (
-              <ul className={styles.repoList} key={repo.id}>
+              <ul
+                onClick={() => setItemId(repo.id)}
+                className={styles.repoList}
+                key={repo.id}
+              >
                 <li>
                   <a
                     href={repo.html_url}
@@ -84,7 +89,7 @@ const Repositories = () => {
                     {repo.name}
                   </a>
                 </li>
-                <li>{repo.language }</li>
+                <li>{repo.language}</li>
                 <li>{repo.forks_count}</li>
                 <li>{repo.stargazers_count}</li>
                 <li>{new Date(repo.updated_at).toLocaleDateString()}</li>
@@ -93,6 +98,13 @@ const Repositories = () => {
           </div>
         </div>
       )}
+      {/* {itemId === undefined ? (
+        <h1>Выберети репозиторий</h1>
+      ) : (
+        <AdditionalInfo id={itemId} />
+      )} */}
+
+      {itemId && <AdditionalInfo id={itemId} />}
     </div>
   );
 };
